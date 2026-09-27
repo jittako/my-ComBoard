@@ -45,9 +45,12 @@ const categories = [
 
 const categoryList = document.querySelector('#category-list');
 const wordGrid = document.querySelector('#word-grid');
+const messageSection = document.querySelector('.message-section');
 const messageBoard = document.querySelector('#message-board');
 const messagePlaceholder = document.querySelector('#message-placeholder');
 const messageCount = document.querySelector('#message-count');
+const modeHint = document.querySelector('#mode-hint');
+const modeButtons = document.querySelectorAll('.mode-button');
 const undoButton = document.querySelector('#undo-button');
 const clearButton = document.querySelector('#clear-button');
 const speakButton = document.querySelector('#speak-button');
@@ -56,6 +59,7 @@ const voiceStatusDot = document.querySelector('.status-dot');
 
 let activeCategoryId = categories[0].id;
 let selectedWords = [];
+let playbackMode = 'compose';
 
 function renderCategories() {
 	categoryList.replaceChildren();
@@ -96,8 +100,26 @@ function renderWords() {
 		word.textContent = label;
 
 		button.append(symbol, word);
-		button.addEventListener('click', () => addWord(label, emoji));
+		button.addEventListener('click', () => {
+			if (playbackMode === 'direct') {
+				speakText(label);
+				return;
+			}
+
+			addWord(label, emoji);
+		});
 		wordGrid.append(button);
+	});
+}
+
+function setPlaybackMode(mode) {
+	playbackMode = mode;
+	messageSection.hidden = mode === 'direct';
+	modeHint.textContent = mode === 'direct'
+		? 'おすと、そのことばをすぐに再生します'
+		: 'えらんだことばをつなげて再生できます';
+	modeButtons.forEach((button) => {
+		button.setAttribute('aria-pressed', String(button.dataset.mode === mode));
 	});
 }
 
@@ -131,16 +153,24 @@ function addWord(label, emoji) {
 	renderMessage();
 }
 
-function speakMessage() {
-	if (!('speechSynthesis' in window) || selectedWords.length === 0) {
+function speakText(text) {
+	if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) {
 		return;
 	}
 
 	window.speechSynthesis.cancel();
-	const utterance = new SpeechSynthesisUtterance(selectedWords.map(({ label }) => label).join(' '));
+	const utterance = new SpeechSynthesisUtterance(text);
 	utterance.lang = 'ja-JP';
 	utterance.rate = 0.9;
 	window.speechSynthesis.speak(utterance);
+}
+
+function speakMessage() {
+	if (selectedWords.length === 0) {
+		return;
+	}
+
+	speakText(selectedWords.map(({ label }) => label).join(' '));
 }
 
 undoButton.addEventListener('click', () => {
@@ -155,6 +185,9 @@ clearButton.addEventListener('click', () => {
 });
 
 speakButton.addEventListener('click', speakMessage);
+modeButtons.forEach((button) => {
+	button.addEventListener('click', () => setPlaybackMode(button.dataset.mode));
+});
 
 if ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window) {
 	voiceStatusText.textContent = '音声でつたえられます';

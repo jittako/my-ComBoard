@@ -111,6 +111,34 @@ h1 {
 	margin: 28px auto 48px;
 }
 
+.mode-switch {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	width: min(100%, 440px);
+	gap: 4px;
+	padding: 4px;
+	border: 1px solid #d1ded5;
+	border-radius: 12px;
+	background: #e7eee8;
+}
+
+.mode-button {
+	min-height: 48px;
+	padding: 8px 12px;
+	border: 2px solid transparent;
+	border-radius: 8px;
+	background: transparent;
+	cursor: pointer;
+	font-size: 15px;
+	font-weight: 800;
+}
+
+.mode-button[aria-pressed="true"] {
+	border-color: var(--green);
+	background: #fff;
+	color: var(--green-dark);
+}
+
 .section-heading {
 	display: flex;
 	align-items: baseline;
@@ -341,6 +369,10 @@ h1 {
 		gap: 24px;
 		margin-top: 20px;
 	}
+
+		.mode-switch {
+			width: 100%;
+		}
 
 	.section-heading h2 {
 		font-size: 17px;

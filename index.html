@@ -24,6 +24,11 @@
     </header>
 
     <main class="app-main">
+        <div class="mode-switch" role="group" aria-label="ことばの使い方">
+            <button class="mode-button" type="button" data-mode="compose" aria-pressed="true">文をつくる</button>
+            <button class="mode-button" type="button" data-mode="direct" aria-pressed="false">一つずつ再生</button>
+        </div>
+
         <section class="message-section" aria-labelledby="message-heading">
             <div class="section-heading">
                 <h2 id="message-heading">つたえたいこと</h2>
@@ -48,7 +53,7 @@
         <section class="vocabulary-section" aria-labelledby="vocabulary-heading">
             <div class="section-heading vocabulary-heading">
                 <h2 id="vocabulary-heading">ことばをえらぶ</h2>
-                <span class="tap-hint">おすと、ことばがならびます</span>
+                <span class="tap-hint" id="mode-hint">えらんだことばをつなげて再生できます</span>
             </div>
             <div class="category-list" id="category-list" role="group" aria-label="ことばのカテゴリー"></div>
             <div class="word-grid" id="word-grid" aria-live="polite"></div>
