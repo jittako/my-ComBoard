@@ -87,7 +87,11 @@ const addWordForm = document.querySelector('#add-word-form');
 const wordLabelInput = document.querySelector('#word-label');
 const wordCategorySelect = document.querySelector('#word-category');
 const wordEmojiSelect = document.querySelector('#word-emoji');
+const saveWordButton = document.querySelector('#save-word-button');
+const cancelEditWordButton = document.querySelector('#cancel-edit-word');
 const saveFeedback = document.querySelector('#save-feedback');
+const customWordList = document.querySelector('#custom-word-list');
+const customWordEmpty = document.querySelector('#custom-word-empty');
 const undoButton = document.querySelector('#undo-button');
 const clearButton = document.querySelector('#clear-button');
 const speakButton = document.querySelector('#speak-button');
@@ -98,6 +102,7 @@ let activeCategoryId = categories[0].id;
 let selectedWords = [];
 let playbackMode = loadPlaybackMode();
 let customWords = loadCustomWords();
+let editingCustomWordId = null;
 
 function renderCategoryOptions() {
 	wordCategorySelect.replaceChildren();
@@ -164,6 +169,99 @@ function renderWords() {
 	});
 }
 
+function renderCustomWords() {
+	customWordList.replaceChildren();
+	customWordList.hidden = customWords.length === 0;
+	customWordEmpty.hidden = customWords.length > 0;
+
+	customWords.forEach((customWord) => {
+		const item = document.createElement('li');
+		item.className = 'custom-word-item';
+
+		const symbol = document.createElement('span');
+		symbol.className = 'custom-word-symbol';
+		symbol.setAttribute('aria-hidden', 'true');
+		symbol.textContent = customWord.emoji;
+
+		const details = document.createElement('span');
+		details.className = 'custom-word-details';
+		const name = document.createElement('span');
+		name.className = 'custom-word-name';
+		name.textContent = customWord.label;
+		const category = categories.find((entry) => entry.id === customWord.categoryId);
+		const categoryName = document.createElement('span');
+		categoryName.className = 'custom-word-category';
+		categoryName.textContent = category.label;
+		details.append(name, categoryName);
+
+		const actions = document.createElement('span');
+		actions.className = 'custom-word-actions';
+		const editButton = document.createElement('button');
+		editButton.className = 'management-button';
+		editButton.type = 'button';
+		editButton.textContent = '編集';
+		editButton.setAttribute('aria-label', `${customWord.label}を編集`);
+		editButton.addEventListener('click', () => beginEditCustomWord(customWord.id));
+
+		const deleteButton = document.createElement('button');
+		deleteButton.className = 'management-button delete';
+		deleteButton.type = 'button';
+		deleteButton.textContent = '削除';
+		deleteButton.setAttribute('aria-label', `${customWord.label}を削除`);
+		deleteButton.addEventListener('click', () => deleteCustomWord(customWord.id));
+		actions.append(editButton, deleteButton);
+
+		item.append(symbol, details, actions);
+		customWordList.append(item);
+	});
+}
+
+function beginEditCustomWord(wordId) {
+	const customWord = customWords.find((word) => word.id === wordId);
+	if (!customWord) {
+		return;
+	}
+
+	editingCustomWordId = wordId;
+	wordLabelInput.value = customWord.label;
+	wordCategorySelect.value = customWord.categoryId;
+	wordEmojiSelect.value = customWord.emoji;
+	saveWordButton.textContent = '変更を保存';
+	cancelEditWordButton.hidden = false;
+	saveFeedback.textContent = `「${customWord.label}」を編集中です。`;
+	wordLabelInput.focus();
+}
+
+function resetWordForm() {
+	addWordForm.reset();
+	editingCustomWordId = null;
+	saveWordButton.textContent = '追加して保存';
+	cancelEditWordButton.hidden = true;
+}
+
+function deleteCustomWord(wordId) {
+	const customWord = customWords.find((word) => word.id === wordId);
+	if (!customWord || !window.confirm(`「${customWord.label}」を削除しますか？この操作は取り消せません。`)) {
+		return;
+	}
+
+	const updatedWords = customWords.filter((word) => word.id !== wordId);
+	try {
+		localStorage.setItem(customWordsStorageKey, JSON.stringify(updatedWords));
+	} catch {
+		saveFeedback.textContent = '削除を保存できませんでした。ブラウザーの設定を確認してください。';
+		return;
+	}
+
+	customWords = updatedWords;
+	if (editingCustomWordId === wordId) {
+		resetWordForm();
+	}
+	renderWords();
+	renderCustomWords();
+	saveFeedback.textContent = `「${customWord.label}」を削除しました。`;
+}
+
 function setPlaybackMode(mode) {
 	playbackMode = mode;
 	try {
@@ -218,12 +316,15 @@ function saveCustomWord(event) {
 	}
 
 	const newWord = {
-		id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+		id: editingCustomWordId || `${Date.now()}-${Math.random().toString(36).slice(2)}`,
 		label,
 		emoji: wordEmojiSelect.value,
 		categoryId
 	};
-	const updatedWords = [...customWords, newWord];
+	const wasEditing = editingCustomWordId !== null;
+	const updatedWords = wasEditing
+		? customWords.map((word) => word.id === editingCustomWordId ? newWord : word)
+		: [...customWords, newWord];
 
 	try {
 		localStorage.setItem(customWordsStorageKey, JSON.stringify(updatedWords));
@@ -236,9 +337,12 @@ function saveCustomWord(event) {
 	activeCategoryId = categoryId;
 	renderCategories();
 	renderWords();
-	addWordForm.reset();
+	renderCustomWords();
+	resetWordForm();
 	wordCategorySelect.value = categoryId;
-	saveFeedback.textContent = `「${label}」をこの端末に保存しました。`;
+	saveFeedback.textContent = wasEditing
+		? `「${label}」を更新しました。`
+		: `「${label}」をこの端末に保存しました。`;
 	wordLabelInput.focus();
 }
 
@@ -284,6 +388,11 @@ closeSettingsButton.addEventListener('click', () => {
 	settingsDialog.close();
 });
 addWordForm.addEventListener('submit', saveCustomWord);
+cancelEditWordButton.addEventListener('click', () => {
+	resetWordForm();
+	saveFeedback.textContent = '';
+	wordLabelInput.focus();
+});
 setPlaybackMode(playbackMode);
 
 if ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window) {
@@ -297,3 +406,4 @@ renderCategories();
 renderCategoryOptions();
 renderWords();
 renderMessage();
+renderCustomWords();

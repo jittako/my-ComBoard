@@ -69,9 +69,17 @@
                             </select>
                         </label>
                     </div>
-                    <button class="action-button speak-button" type="submit">追加して保存</button>
+                    <div class="add-word-actions">
+                        <button class="action-button speak-button" id="save-word-button" type="submit">追加して保存</button>
+                        <button class="action-button secondary" id="cancel-edit-word" type="button" hidden>編集をやめる</button>
+                    </div>
                     <p class="save-feedback" id="save-feedback" role="status" aria-live="polite"></p>
                 </form>
+            </section>
+            <section class="settings-section" aria-labelledby="custom-words-heading">
+                <h3 id="custom-words-heading">登録したことば</h3>
+                <ul class="custom-word-list" id="custom-word-list" aria-label="追加したことば"></ul>
+                <p class="custom-word-empty" id="custom-word-empty">追加したことばはまだありません。</p>
             </section>
         </div>
     </dialog>
