@@ -20,15 +20,63 @@
                 <span class="status-dot" aria-hidden="true"></span>
                 <span id="voice-status-text">音声を準備しています</span>
             </div>
+            <button class="header-settings" id="open-settings" type="button" aria-label="設定をひらく" title="設定">
+                <span aria-hidden="true">⚙</span><span class="header-settings-label">設定</span>
+            </button>
         </div>
     </header>
 
-    <main class="app-main">
-        <div class="mode-switch" role="group" aria-label="ことばの使い方">
-            <button class="mode-button" type="button" data-mode="compose" aria-pressed="true">文をつくる</button>
-            <button class="mode-button" type="button" data-mode="direct" aria-pressed="false">一つずつ再生</button>
+    <dialog class="settings-dialog" id="settings-dialog" aria-labelledby="settings-heading">
+        <div class="settings-content">
+            <div class="settings-header">
+                <div>
+                    <p class="eyebrow settings-eyebrow">AAC SETTINGS</p>
+                    <h2 id="settings-heading">設定</h2>
+                </div>
+                <button class="settings-close" id="close-settings" type="button" aria-label="設定をとじる">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <section class="settings-section" aria-labelledby="playback-settings-heading">
+                <h3 id="playback-settings-heading">ことばの再生方法</h3>
+                <div class="mode-switch" role="group" aria-label="ことばの再生方法">
+                    <button class="mode-button" type="button" data-mode="compose" aria-pressed="true">文をつくる</button>
+                    <button class="mode-button" type="button" data-mode="direct" aria-pressed="false">一つずつ再生</button>
+                </div>
+            </section>
+            <section class="settings-section" aria-labelledby="add-word-heading">
+                <h3 id="add-word-heading">ことばを追加</h3>
+                <p class="settings-note">追加したことばは、この端末のブラウザーに保存されます。</p>
+                <form class="add-word-form" id="add-word-form">
+                    <div class="add-word-fields">
+                        <label>
+                            ことば
+                            <input id="word-label" name="label" type="text" maxlength="24" autocomplete="off" required placeholder="例：おなかがすいた">
+                        </label>
+                        <label>
+                            カテゴリー
+                            <select id="word-category" name="category" required></select>
+                        </label>
+                        <label>
+                            マーク
+                            <select id="word-emoji" name="emoji">
+                                <option value="💬">💬 おはなし</option>
+                                <option value="⭐">⭐ すき</option>
+                                <option value="🍽️">🍽️ たべもの</option>
+                                <option value="🎨">🎨 あそび</option>
+                                <option value="🚶">🚶 いどう</option>
+                                <option value="❗">❗ そのほか</option>
+                            </select>
+                        </label>
+                    </div>
+                    <button class="action-button speak-button" type="submit">追加して保存</button>
+                    <p class="save-feedback" id="save-feedback" role="status" aria-live="polite"></p>
+                </form>
+            </section>
         </div>
+    </dialog>
 
+    <main class="app-main">
         <section class="message-section" aria-labelledby="message-heading">
             <div class="section-heading">
                 <h2 id="message-heading">つたえたいこと</h2>
