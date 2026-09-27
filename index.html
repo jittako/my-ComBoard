@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#176b59">
+    <title>ことばボード | AAC</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-inner">
+            <div class="brand-mark" aria-hidden="true">こ</div>
+            <div>
+                <p class="eyebrow">AAC COMMUNICATION</p>
+                <h1>ことばボード</h1>
+            </div>
+            <div class="voice-status" id="voice-status" role="status" aria-live="polite">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span id="voice-status-text">音声を準備しています</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="message-section" aria-labelledby="message-heading">
+            <div class="section-heading">
+                <h2 id="message-heading">つたえたいこと</h2>
+                <span class="message-count" id="message-count">0こ</span>
+            </div>
+            <div class="message-board" id="message-board" aria-live="polite" aria-relevant="additions text">
+                <p class="message-placeholder" id="message-placeholder">ことばをえらぶと、ここにならびます</p>
+            </div>
+            <div class="message-actions">
+                <button class="action-button secondary" id="undo-button" type="button" disabled aria-label="さいごのことばをひとつもどす">
+                    <span aria-hidden="true">↶</span> ひとつもどす
+                </button>
+                <button class="action-button secondary clear-button" id="clear-button" type="button" disabled>
+                    <span aria-hidden="true">×</span> ぜんぶけす
+                </button>
+                <button class="action-button speak-button" id="speak-button" type="button" disabled>
+                    <span aria-hidden="true">▶</span> つたえる
+                </button>
+            </div>
+        </section>
+
+        <section class="vocabulary-section" aria-labelledby="vocabulary-heading">
+            <div class="section-heading vocabulary-heading">
+                <h2 id="vocabulary-heading">ことばをえらぶ</h2>
+                <span class="tap-hint">おすと、ことばがならびます</span>
+            </div>
+            <div class="category-list" id="category-list" role="group" aria-label="ことばのカテゴリー"></div>
+            <div class="word-grid" id="word-grid" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <footer class="app-footer">ことばは、あなたのペースで。</footer>
+</body>
+</html>
