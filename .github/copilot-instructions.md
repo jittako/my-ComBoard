@@ -40,6 +40,7 @@ A key architectural constraint is that the app remains purely client-side and br
 ## Key conventions specific to this repo
 - Keep the project as vanilla HTML/CSS/JS; avoid adding a framework or build pipeline unless the repository explicitly grows beyond this static-app pattern.
 - Preserve the existing Japanese UX text and AAC terminology; the app is designed around Japanese phrase building and screen-reader-friendly buttons.
+- Display explanations in Japanese.
 - Custom storage is versioned in `localStorage` keys (for example `aac-custom-words-v1` and `aac-playback-mode-v1`). Keep that naming pattern stable when adding or changing stored state.
 - When adding new vocabulary groups, update the `categories` array in `script.js` and keep `categoryId` values consistent with the validation checks in `loadCustomWords()`.
 - If you alter speech behavior, keep the `speechSynthesis` guard checks (`if ('speechSynthesis' in window ...)`) so the app still works on browsers without speech support.
