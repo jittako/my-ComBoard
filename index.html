@@ -37,6 +37,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
+
             <section class="settings-section" aria-labelledby="playback-settings-heading">
                 <h3 id="playback-settings-heading">ことばの再生方法</h3>
                 <div class="mode-switch" role="group" aria-label="ことばの再生方法">
@@ -44,6 +45,17 @@
                     <button class="mode-button" type="button" data-mode="direct" aria-pressed="false">一つずつ再生</button>
                 </div>
             </section>
+
+            <section class="settings-section" aria-labelledby="category-manager-heading">
+                <h3 id="category-manager-heading">カテゴリを編集</h3>
+                <div class="category-manager-inputs">
+                    <input id="category-name-input" type="text" maxlength="20" placeholder="カテゴリ名を入力" autocomplete="off">
+                    <button class="action-button secondary" id="add-category-button" type="button">カテゴリ追加</button>
+                </div>
+                <ul class="custom-category-list" id="custom-category-list" aria-label="追加したカテゴリ"></ul>
+                <p class="custom-category-empty" id="custom-category-empty">追加したカテゴリはまだありません。</p>
+            </section>
+
             <section class="settings-section" aria-labelledby="add-word-heading">
                 <h3 id="add-word-heading">ことばを追加</h3>
                 <p class="settings-note">追加したことばは、この端末のブラウザーに保存されます。</p>
