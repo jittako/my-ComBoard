@@ -270,11 +270,12 @@ h1 {
 
 .add-word-fields {
 	display: grid;
-	grid-template-columns: 2fr 1fr 1fr;
+	grid-template-columns: 2fr 1fr 1fr 1fr;
 	gap: 12px;
 }
 
-.add-word-fields label {
+.add-word-fields label,
+.image-field {
 	display: grid;
 	align-content: start;
 	gap: 6px;
@@ -283,7 +284,8 @@ h1 {
 }
 
 .add-word-fields input,
-.add-word-fields select {
+.add-word-fields select,
+.word-image-input input {
 	width: 100%;
 	min-height: 48px;
 	padding: 8px 10px;
@@ -296,9 +298,24 @@ h1 {
 }
 
 .add-word-fields input:focus-visible,
-.add-word-fields select:focus-visible {
+.add-word-fields select:focus-visible,
+.word-image-input input:focus-visible {
 	outline: 3px solid var(--orange);
 	outline-offset: 2px;
+}
+
+.word-image-input {
+	display: grid;
+	gap: 8px;
+}
+
+.word-image-preview {
+	width: 100%;
+	height: 72px;
+	object-fit: cover;
+	border: 1px solid #d7e2da;
+	border-radius: 10px;
+	background: #f2f6f3;
 }
 
 .add-word-actions {
@@ -333,7 +350,11 @@ h1 {
 }
 
 .custom-word-symbol {
+	display: grid;
+	place-items: center;
 	flex: 0 0 auto;
+	width: 42px;
+	height: 42px;
 	font-size: 27px;
 }
 
@@ -427,6 +448,10 @@ h1 {
 }
 
 .message-word .word-emoji {
+	display: grid;
+	place-items: center;
+	width: 28px;
+	height: 28px;
 	font-size: 24px;
 }
 
@@ -539,8 +564,19 @@ h1 {
 }
 
 .word-emoji {
+	display: grid;
+	place-items: center;
+	width: 40px;
+	height: 40px;
 	font-size: 34px;
 	line-height: 1;
+}
+
+.word-image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 8px;
 }
 
 .app-footer {
@@ -573,6 +609,8 @@ h1 {
 	}
 
 	.word-emoji {
+		width: 44px;
+		height: 44px;
 		font-size: 40px;
 	}
 }
@@ -648,6 +686,8 @@ h1 {
 	}
 
 	.word-emoji {
+		width: 34px;
+		height: 34px;
 		font-size: 30px;
 	}
 
