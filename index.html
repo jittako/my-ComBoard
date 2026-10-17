@@ -100,9 +100,14 @@
                 </form>
             </section>
             <section class="settings-section" aria-labelledby="custom-words-heading">
-                <h3 id="custom-words-heading">登録したことば</h3>
-                <ul class="custom-word-list" id="custom-word-list" aria-label="追加したことば"></ul>
-                <p class="custom-word-empty" id="custom-word-empty">追加したことばはまだありません。</p>
+                <h3 id="custom-words-heading">ことばの管理</h3>
+                <p class="settings-note">もともとあることばや追加したことばを削除できます。削除したことばは、この端末のブラウザーに保存されます。</p>
+                <div class="bulk-delete-actions">
+                    <button class="management-button delete" id="delete-selected-words" type="button" disabled>選んだことばをまとめて削除</button>
+                    <span id="selected-word-count" role="status" aria-live="polite">選択中：0こ</span>
+                </div>
+                <ul class="custom-word-list" id="custom-word-list" aria-label="登録したことば"></ul>
+                <p class="custom-word-empty" id="custom-word-empty">登録したことばはありません。</p>
             </section>
         </div>
     </dialog>
