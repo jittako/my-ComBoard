@@ -48,12 +48,14 @@
 
             <section class="settings-section" aria-labelledby="category-manager-heading">
                 <h3 id="category-manager-heading">カテゴリを編集</h3>
+                <p class="settings-note">追加したカテゴリは、この端末のブラウザーに保存されます。カテゴリを削除すると、その中の追加したことばも削除されます。</p>
                 <div class="category-manager-inputs">
-                    <input id="category-name-input" type="text" maxlength="20" placeholder="カテゴリ名を入力" autocomplete="off">
+                    <input id="category-name-input" type="text" maxlength="20" aria-label="追加するカテゴリ名" placeholder="カテゴリ名を入力" autocomplete="off">
                     <button class="action-button secondary" id="add-category-button" type="button">カテゴリ追加</button>
                 </div>
                 <ul class="custom-category-list" id="custom-category-list" aria-label="追加したカテゴリ"></ul>
                 <p class="custom-category-empty" id="custom-category-empty">追加したカテゴリはまだありません。</p>
+                <p class="save-feedback" id="category-feedback" role="status" aria-live="polite"></p>
             </section>
 
             <section class="settings-section" aria-labelledby="add-word-heading">
@@ -79,6 +81,15 @@
                                 <option value="🚶">🚶 いどう</option>
                                 <option value="❗">❗ そのほか</option>
                             </select>
+                        </label>
+                        <label class="image-field">
+                            写真（えらばなくても使えます）
+                            <span class="word-image-input">
+                                <input id="word-image" name="image" type="file" accept="image/*" capture="environment" aria-describedby="word-image-help">
+                                <img class="word-image-preview" id="word-image-preview" alt="ことばに設定する写真のプレビュー" hidden>
+                                <button class="management-button delete" id="remove-word-image" type="button" hidden>写真を外す</button>
+                            </span>
+                            <span class="settings-note" id="word-image-help">スマートフォンではカメラまたは写真から選べます。写真は縮小してこの端末に保存します（10MBまで）。</span>
                         </label>
                     </div>
                     <div class="add-word-actions">
